@@ -52,7 +52,9 @@ def f(x):
     return x ** 0.5 * np.log(x)
 
 
+# 计算结果
 s, T = romberg(f, 0.0000001, 1)
+# 库函数积分结果
 res = integrate.romberg(f, 0, 1)
 print(s)
 print(res)
