@@ -2,6 +2,32 @@ import numpy as np
 from scipy import integrate
 
 
+def trapezia_integrate(f, a, b, n=8):
+    """梯形公式计算积分"""
+    x = np.linspace(a, b, n + 1)
+    h = (b - a) / (n * 1.)
+
+    s = f(a) + f(b)
+    for i in range(1, n):
+        s += 2. * f(x[i])
+    s *= 0.5 * h
+    return s, x
+
+
+def simpson_integrate(f, a, b, n=8):
+    """辛普森公式积分"""
+    x = np.linspace(a, b, n + 1)
+    h = (b - a) / (n * 1.)
+
+    s = f(a) + f(b)
+    for i in range(1, n):
+        s = s + 4. * f((x[i - 1] + x[i]) * 0.5) + 2. * f(x[i])
+    i = n
+    s += 4. * f((x[i - 1] + x[i]) * 0.5)
+    s *= (1. / 6) * h
+    return s, x
+
+
 def romberg(f, a, b, n=10):
     """龙贝格积分，f: 函数, x in [a, b]，返回积分值和积分矩阵T"""
     # 初始化条件
@@ -47,16 +73,18 @@ def romberg(f, a, b, n=10):
 
 
 def f(x):
-    if x == 0.:
-        return 0
-    return x ** 0.5 * np.log(x)
+    return x / (4. + x ** 2)
 
+
+res, x = trapezia_integrate(f, 0, 1, n=8)
+print(res)
+print(x)
 
 # 计算结果
-s, T = romberg(f, 0.0000001, 1)
+# s, T = romberg(f, 0.0000001, 1)
 # 库函数积分结果
-res = integrate.romberg(f, 0, 1)
-print(s)
-print(res)
-for i in range(len(T)):
-    print(T[i])
+# res = integrate.romberg(f, 0, 1)
+# print(s)
+# print(res)
+# for i in range(len(T)):
+    # print(T[i])
